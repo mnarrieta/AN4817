@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html lang="es" data-bs-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UNIDAD 0: Introducción a GitHub - De Cero a Colaborar en Equipo</title>
+    
+    <!-- Bootstrap 5.3 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+    <!-- Highlight.js CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+
+    <!-- MathJax Configuration -->
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']]
+            },
+            svg: {
+                fontCache: 'global'
+            }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+    <style>
+        :root {
+            --sidebar-width: 280px;
+            --top-navbar-height: 65px;
+            --font-main: 'Inter', system-ui, -apple-system, sans-serif;
+            --font-code: 'Fira Code', monospace;
+        }
+
+        body {
+            font-family: var(--font-main);
+            padding-top: var(--top-navbar-height);
+            position: relative;
+        }
+
+        /* Reading Progress Bar */
+        #progress-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: transparent;
+            z-index: 1050;
+        }
+
+        #progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #198754, #0d6efd, #0dcaf0);
+            width: 0%;
+            transition: width 0.1s ease-out;
+        }
+
+        /* Top Navbar */
+        .navbar-custom {
+            height: var(--top-navbar-height);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(0,0,0,0.1);
+        }
+        [data-bs-theme="dark"] .navbar-custom {
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .institute-logo {
+            height: 38px;
+            width: auto;
+            object-fit: contain;
+            border-radius: 4px;
+        }
+
+        .sidebar-logo {
+            height: 45px;
+            width: auto;
+            object-fit: contain;
+            border-radius: 4px;
+        }
+
+        /* Sidebar Styling */
+        #sidebar {
+            width: var(--sidebar-width);
+            position: fixed;
+            top: var(--top-navbar-height);
+            bottom: 0;
+            left: 0;
+            z-index: 100;
+            padding: 1rem 0;
+            overflow-y: auto;
+            border-right: 1px solid rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        [data-bs-theme="dark"] #sidebar {
+            border-right: 1px solid rgba(255, 255, 255, 0.1);
+            background-color: #121416;
+        }
+
+        .sidebar-nav .nav-link {
+            font-size: 0.88rem;
+            padding: 0.5rem 1.25rem;
+            color: var(--bs-body-color);
+            border-left: 3px solid transparent;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.2s ease;
+        }
+
+        .sidebar-nav .nav-link:hover, 
+        .sidebar-nav .nav-link.active {
+            color: #198754;
+            background-color: rgba(25, 135, 84, 0.08);
+            border-left-color: #198754;
+            font-weight: 600;
+        }
+
+        .sidebar-heading {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            padding: 0.75rem 1.25rem 0.25rem;
+            color: #6c757d;
+            font-weight: 700;
+        }
+
+        /* Main Content Container */
+        #main-content {
+            margin-left: var(--sidebar-width);
+            padding: 2.5rem;
+            max-width: 1200px;
+        }
+
+        @media (max-width: 991.98px) {
+            #sidebar {
+                transform: translateX(-100%);
+            }
+            #sidebar.show {
+                transform: translateX(0);
+            }
+            #main-content {
+                margin-left: 0;
+                padding: 1.5rem 1rem;
+            }
+        }
+
+        /* Card and Components Enhancements */
+        .glass-card {
+            border-radius: 0.75rem;
+            border: 1px solid rgba(0, 0, 0, 0.08);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        [data-bs-theme="dark"] .glass-card {
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .glass-card:hover {
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.06);
+        }
+
+        .section-header {
+            border-bottom: 2px solid rgba(25, 135, 84, 0.2);
+            padding-bottom: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        pre code {
+            font-family: var(--font-code) !important;
+            border-radius: 0.5rem;
+            font-size: 0.88rem;
+        }
+
+        .math-block {
+            overflow-x: auto;
+            padding: 1rem;
+            background-color: rgba(25, 135, 84, 0.04);
+            border-radius: 0.5rem;
+            border-left: 4px solid #198754;
+            margin: 1rem 0;
+        }
+
+        .copy-container {
+            position: relative;
+        }
+
+        .copy-btn {
+            position: absolute;
+            top: 0.5rem;
+            right: 0.5rem;
+            z-index: 10;
+        }
+    </style>
+</head>
+<body data-bs-spy="scroll" data-bs-target="#sidebar-menu" data-bs-offset="100" tabindex="0">
+
+    <!-- Reading Progress Bar -->
+    <div id="progress-container">
+        <div id="progress-bar"></div>
+    </div>
+
+    <!-- Top Navigation Bar -->
+    <nav class="navbar navbar-expand-lg fixed-top navbar-custom bg-body">
+        <div class="container-fluid px-3">
+            <button class="btn btn-outline-secondary d-lg-none me-2" type="button" id="sidebarToggle" aria-label="Toggle Navigation">
+                <i class="bi bi-list fs-5"></i>
+            </button>
+            
+            <a class="navbar-brand d-flex align-items-center gap-2 fw-bold text-success" href="#">
+                <img src="iesfuengirola1_logo.jpeg" alt="Logo I.E.S. Fuengirola 1" class="institute-logo" onerror="this.src='https://placehold.co/100x100/198754/ffffff?text=IES+F1'">
+                <span>UNIDAD 0.B: Introducción a GitHub</span>
+            </a>
+
+            <div class="d-flex align-items-center gap-2 ms-auto">
+                <!-- Search Box -->
+                <div class="input-group d-none d-md-flex" style="width: 240px;">
+                    <span class="input-group-text bg-body-tertiary border-end-0"><i class="bi bi-search"></i></span>
+                    <input type="text" id="quickSearch" class="form-control bg-body-tertiary border-start-0" placeholder="Buscar concepto...">
+                </div>
+
+                <!-- Theme Toggle Button -->
+                <button class="btn btn-outline-secondary rounded-circle ms-2" id="themeToggle" aria-label="Cambiar Tema">
+                    <i class="bi bi-moon-stars-fill" id="themeIcon"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Sidebar Layout -->
+    <aside id="sidebar" class="bg-body">
+        <div class="px-3 pb-3 mb-2 border-bottom d-flex align-items-center gap-2">
+            <img src="iesfuengirola1_logo.jpeg" alt="Logo I.E.S. Fuengirola 1" class="sidebar-logo" onerror="this.src='https://placehold.co/100x100/198754/ffffff?text=IES+F1'">
+            <div>
+                <div class="fw-bold fs-6 leading-tight">I.E.S. Fuengirola 1</div>
+                <small class="text-muted d-block" style="font-size: 0.72rem;">Departamento de Informática</small>
+            </div>
+        </div>
+
+        <nav id="sidebar-menu" class="sidebar-nav">
+            <div class="sidebar-heading">Información General</div>
+            <a class="nav-link" href="#sec-0-0"><i class="bi bi-info-circle"></i> Ficha Didáctica</a>
+
+            <div class="sidebar-heading">Sesión 1</div>
+            <a class="nav-link" href="#sec-0-1"><i class="bi bi-github"></i> 0.1. Fundamentos e Inducción</a>
+            <a class="nav-link" href="#sec-0-1-2"><i class="bi bi-play-circle"></i> 0.1.2. Ejemplo Práctico en Vivo</a>
+            <a class="nav-link" href="#sec-0-1-3"><i class="bi bi-trophy"></i> 0.1.3. Actividad Práctica</a>
+
+            <div class="sidebar-heading">Sesión 2</div>
+            <a class="nav-link" href="#sec-0-2"><i class="bi bi-git"></i> 0.2. Flujo de Trabajo y PRs</a>
+            <a class="nav-link" href="#sec-0-2-2"><i class="bi bi-diagram-2"></i> 0.2.2. Ejemplo Paso a Paso</a>
+            <a class="nav-link" href="#sec-0-2-3"><i class="bi bi-person-workspace"></i> 0.2.3. Reto en Solitario</a>
+
+            <div class="sidebar-heading">Sesión 3</div>
+            <a class="nav-link" href="#sec-0-3"><i class="bi bi-people"></i> 0.3. Trabajo Colaborativo</a>
+            <a class="nav-link" href="#sec-0-3-2"><i class="bi bi-controller"></i> 0.3.2. Juego del Menú</a>
+
+            <div class="sidebar-heading">Sesión 4</div>
+            <a class="nav-link" href="#sec-0-4"><i class="bi bi-globe"></i> 0.4. Publicación y Portafolio</a>
+            <a class="nav-link" href="#sec-0-4-2"><i class="bi bi-check2-square"></i> 0.4.2. Proyecto Integrador</a>
+        </nav>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main id="main-content">
+        
+        <!-- Header Hero Banner -->
+        <div class="p-4 p-md-5 mb-5 rounded-4 bg-success bg-gradient text-white shadow-sm">
+            <div class="row align-items-center">
+                <div class="col-lg-8">
+                    <span class="badge bg-light text-success mb-2 fw-semibold">Especialización en Informática - I.E.S. Fuengirola 1</span>
+                    <h1 class="display-5 fw-bold mb-3">UNIDAD 0: Introducción a GitHub</h1>
+                    <p class="lead mb-0">Unidad Didáctica: "GitHub sin Miedo: De Cero a Colaborar en Equipo". Una guía progresiva, práctica y orientada a proyectos para dominar la plataforma esencial de control de versiones y trabajo colaborativo.</p>
+                </div>
+                <div class="col-lg-4 text-center mt-4 mt-lg-0">
+                    <img src="iesfuengirola1_logo.jpeg" alt="Logo I.E.S. Fuengirola 1" class="img-fluid rounded-3 bg-white p-2 shadow-sm" style="max-height: 120px;" onerror="this.style.display='none'">
+                    <i class="bi bi-github display-1 opacity-75 d-block mt-2"></i>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECTION 0.0: FICHA DIDÁCTICA -->
+        <section id="sec-0-0" class="mb-5">
+            <div class="card glass-card">
+                <div class="card-body">
+                    <h3 class="h5 text-success mb-3"><i class="bi bi-bookmark-star me-2"></i>Ficha Técnica de la Unidad Didáctica</h3>
+                    <div class="row g-3">
+                        <div class="col-md-4">
+                            <div class="p-3 border rounded-3 bg-body-tertiary h-100">
+                                <div class="text-muted small fw-bold text-uppercase">Duración Estimada</div>
+                                <div class="fs-6 fw-semibold mt-1"><i class="bi bi-clock me-2 text-success"></i>3 - 4 Sesiones (~4 a 6 horas lectivas)</div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="p-3 border rounded-3 bg-body-tertiary h-100">
+                                <div class="text-muted small fw-bold text-uppercase">Público Objetivo</div>
+                                <div class="fs-6 fw-semibold mt-1"><i class="bi bi-mortarboard me-2 text-primary"></i>Grado Medio / Superior de Informática o Sec./Bach. Técnico</div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="p-3 border rounded-3 bg-body-tertiary h-100">
+                                <div class="text-muted small fw-bold text-uppercase">Requisito Previo</div>
+                                <div class="fs-6 fw-semibold mt-1"><i class="bi bi-terminal me-2 text-warning"></i>Nociones muy básicas de Git local (saber qué es un <code>commit</code>)</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 0.1: SESIÓN 1 -->
+        <section id="sec-0-1" class="mb-5">
+            <div class="section-header d-flex align-items-center gap-2">
+                <i class="bi bi-1-circle-fill fs-3 text-success"></i>
+                <h2 class="h3 mb-0">Sesión 1: ¿Qué es GitHub y por qué lo usa todo el mundo?</h2>
+            </div>
+
+            <!-- 0.1.1 Contextualización -->
+            <div class="card glass-card mb-4">
+                <div class="card-body">
+                    <h3 class="h5 text-success mb-3">1. Contextualización y analogías sencillas <span class="badge bg-secondary fs-6 ms-2">15 min</span></h3>
+                    
+                    <div class="p-3 border-start border-4 border-success bg-success bg-opacity-10 rounded-end mb-4">
+                        <h4 class="h6 fw-bold text-success"><i class="bi bi-file-earmark-word me-2"></i>La analogía del Google Docs del Código</h4>
+                        <p class="small mb-0"><em>"Imaginad que estáis haciendo un trabajo en grupo en Word. Si os pasáis el archivo <code>trabajo_v1.docx</code>, <code>trabajo_v2_final.docx</code>, <code>trabajo_este_si_que_si.docx</code>, al final nadie sabe cuál es la versión buena. Google Docs resuelve esto guardando el historial y permitiendo editar a la vez. <strong>GitHub es como un Google Docs, pero diseñado para programadores</strong>."</em></p>
+                    </div>
+
+                    <h4 class="h6 fw-bold mb-3">Conceptos Clave Simplificados</h4>
+                    <div class="row g-3">
+                        <div class="col-md-4">
+                            <div class="p-3 border rounded-3 bg-body-tertiary h-100">
+                                <h5 class="h6 fw-bold text-success"><i class="bi bi-cpu me-1"></i> Git vs. GitHub</h5>
+                                <p class="small text-muted mb-0">Git es la herramienta/motor (el coche); GitHub es el garaje/plataforma web con red social donde aparcas el coche y lo enseñas a otros.</p>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="p-3 border rounded-3 bg-body-tertiary h-100">
+                                <h5 class="h6 fw-bold text-primary"><i class="bi bi-folder-symlink me-1"></i> Repositorio (Repo)</h5>
+                                <p class="small text-muted mb-0">La carpeta del proyecto en la nube que almacena el código, los archivos y todo el historial de cambios.</p>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="p-3 border rounded-3 bg-body-tertiary h-100">
+                                <h5 class="h6 fw-bold text-warning-emphasis"><i class="bi bi-camera me-1"></i> Commit</h5>
+                                <p class="small text-muted mb-0">Una "foto" o punto de guardado de tu código en un momento concreto con un mensaje explicativo.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 0.1.2 Ejemplo en vivo -->
+            <div id="sec-0-1-2" class="card glass-card mb-4">
+                <div class="card-body">
+                    <h3 class="h5 text-success mb-3"><i class="bi bi-play-circle me-2"></i>2. Ejemplo práctico en vivo <span class="badge bg-secondary fs-6 ms-2">15 min</span></h3>
+                    <p class="small text-muted">Demostración en directo conducida por el docente:</p>
+                    <ul class="list-group list-group-flush small">
+                        <li class="list-group-item bg-transparent"><i class="bi bi-check-lg text-success me-2"></i>Crear una cuenta en GitHub (mostrar la interfaz limpia y el panel principal).</li>
+                        <li class="list-group-item bg-transparent"><i class="bi bi-check-lg text-success me-2"></i>Crear un repositorio público llamado <code>mi-primer-proyecto</code>.</li>
+                        <li class="list-group-item bg-transparent"><i class="bi bi-check-lg text-success me-2"></i>Crear un archivo <code>README.md</code> directamente desde la web y escribir una breve presentación usando Markdown básico (títulos, negritas, listas).</li>
+                        <li class="list-group-item bg-transparent"><i class="bi bi-check-lg text-success me-2"></i>Guardar los cambios realizando el primer <strong>Commit changes</strong>.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- 0.1.3 Actividad práctica -->
+            <div id="sec-0-1-3" class="card glass-card border-success">
+                <div class="card-body">
+                    <h3 class="h5 text-success mb-3"><i class="bi bi-trophy me-2"></i>3. Actividad práctica del alumnado <span class="badge bg-secondary fs-6 ms-2">30 min</span></h3>
+                    <div class="row g-3">
+                        <div class="col-md-4">
+                            <div class="p-3 border rounded-3 bg-body-tertiary h-100">
+                                <span class="badge bg-success mb-2">Reto 1</span>
+                                <h4 class="h6 fw-bold">Crear su cuenta individual</h4>
+                                <p class="small text-muted mb-0">Registrarse en GitHub con su correo de estudiante (si aún no disponen de una cuenta).</p>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="p-3 border rounded-3 bg-body-tertiary h-100">
+                                <span class="badge bg-success mb-2">Reto 2</span>
+                                <h4 class="h6 fw-bold">Crear repositorio público</h4>
+                                <p class="small text-muted mb-0">Crear un repositorio público de prueba activando la opción de inicializar con <code>README.md</code>.</p>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="p-3 border rounded-3 bg-body-tertiary h-100">
+                                <span class="badge bg-success mb-2">Reto 3</span>
+                                <h4 class="h6 fw-bold">Personalizar README.md</h4>
+                                <p class="small text-muted mb-0">Escribir su "Perfil de Desarrollador/a" (nombre, tecnologías que están aprendiendo, aficiones) usando formato Markdown.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 0.2: SESIÓN 2 -->
+        <section id="sec-0-2" class="mb-5">
+            <div class="section-header d-flex align-items-center gap-2">
+                <i class="bi bi-2-circle-fill fs-3 text-success"></i>
+                <h2 class="h3 mb-0">Sesión 2: Ramas, Pull Requests y el "Camino Feliz" de Trabajo</h2>
+            </div>
+
+            <div class="card glass-card mb-4">
+                <div class="card-body">
+                    <h3 class="h5 text-success mb-3">1. Explicación del flujo de trabajo <span class="badge bg-secondary fs-6 ms-2">15 min</span></h3>
+                    
+                    <div class="p-3 border-start border-4 border-info bg-info bg-opacity-10 rounded-end mb-4">
+                        <h4 class="h6 fw-bold text-info-emphasis"><i class="bi bi-flask me-2"></i>La analogía del laboratorio/borrador</h4>
+                        <p class="small mb-0"><em>Las ramas permiten experimentar con total seguridad sin poner en riesgo la versión estable de la aplicación.</em></p>
+                    </div>
+
+                    <div class="row g-3">
+                        <div class="col-md-4">
+                            <div class="p-3 border rounded-3 bg-body-tertiary h-100">
+                                <h4 class="h6 fw-bold text-success"><i class="bi bi-git me-1"></i> Rama principal (<code>main</code>)</h4>
+                                <p class="small text-muted mb-0">Es la versión que funciona y está en producción (la app cliente que usan los usuarios). <strong>¡No se toca directamente!</strong></p>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="p-3 border rounded-3 bg-body-tertiary h-100">
+                                <h4 class="h6 fw-bold text-primary"><i class="bi bi-diagram-2 me-1"></i> Ramas secundarias</h4>
+                                <p class="small text-muted mb-0">Una copia aislada (ej. <code>feature-branch</code>) donde experimentas y desarrollas nuevas funcionalidades sin romper la app.</p>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="p-3 border rounded-3 bg-body-tertiary h-100">
+                                <h4 class="h6 fw-bold text-warning-emphasis"><i class="bi bi-pull me-1"></i> Pull Request (PR)</h4>
+                                <p class="small text-muted mb-0">"Oye equipo, he terminado esta nueva función en mi rama. ¿Podéis revisarla antes de juntarla (<code>merge</code>) con la principal?"</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 0.2.2 Ejemplo paso a paso -->
+            <div id="sec-0-2-2" class="card glass-card mb-4">
+                <div class="card-body">
+                    <h3 class="h5 text-success mb-3"><i class="bi bi-diagram-3 me-2"></i>2. Ejemplo paso a paso <span class="badge bg-secondary fs-6 ms-2">20 min</span></h3>
+                    
+                    <!-- Diagrama de flujo ASCII -->
+                    <div class="p-3 border rounded-3 bg-body-tertiary mb-3">
+                        <h4 class="h6 fw-bold mb-2"><i class="bi bi-code-slash text-success me-2"></i>Esquema Visual del Flujo de Trabajo</h4>
+                        <pre class="mb-0"><code class="language-plaintext">[Rama main] ----------------------------------------------> (App Funcional)
+                 \                                 /
+                  \-- [Rama: boton-login] -- (PR) /</code></pre>
+                    </div>
+
+                    <ol class="list-group list-group-numbered list-group-flush small">
+                        <li class="list-group-item bg-transparent"><strong>Crear una rama nueva:</strong> Crear la rama <code>añadir-contacto</code> directamente desde la interfaz web o mediante la terminal.</li>
+                        <li class="list-group-item bg-transparent"><strong>Hacer cambios:</strong> Modificar o añadir una nueva línea en el archivo de texto o código dentro de la rama recién creada.</li>
+                        <li class="list-group-item bg-transparent"><strong>Abrir un Pull Request:</strong> Mostrar cómo se especifica un título claro y una descripción detallada que justifique los cambios realizados.</li>
+                        <li class="list-group-item bg-transparent"><strong>Hacer el Merge:</strong> Aprobar la revisión e integrar (fusionar) la rama secundaria dentro de la rama principal <code>main</code>.</li>
+                    </ol>
+                </div>
+            </div>
+
+            <!-- 0.2.3 Actividad práctica -->
+            <div id="sec-0-2-3" class="card glass-card border-success">
+                <div class="card-body">
+                    <h3 class="h5 text-success mb-3"><i class="bi bi-person-workspace me-2"></i>3. Actividad práctica del alumnado <span class="badge bg-secondary fs-6 ms-2">25 min</span></h3>
+                    <div class="p-3 border rounded-3 bg-body-tertiary">
+                        <h4 class="h6 fw-bold text-success mb-3">Reto en Solitario</h4>
+                        <ol class="small mb-0">
+                            <li class="mb-2">En el repositorio creado la sesión anterior, crear una rama llamada <code>mejora-readme</code>.</li>
+                            <li class="mb-2">Añadir enlaces a sus redes sociales o proyectos en esa rama.</li>
+                            <li class="mb-2">Abrir un <strong>Pull Request</strong> con destino a la rama <code>main</code>.</li>
+                            <li>Realizar el <strong>Merge</strong> y comprobar en la vista principal que la rama <code>main</code> se ha actualizado correctamente.</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 0.3: SESIÓN 3 -->
+        <section id="sec-0-3" class="mb-5">
+            <div class="section-header d-flex align-items-center gap-2">
+                <i class="bi bi-3-circle-fill fs-3 text-success"></i>
+                <h2 class="h3 mb-0">Sesión 3: Trabajo en Equipo y Resolución de Conflictos</h2>
+            </div>
+
+            <div class="card glass-card mb-4">
+                <div class="card-body">
+                    <h3 class="h5 text-success mb-3">1. La Dinámica Colaborativa <span class="badge bg-secondary fs-6 ms-2">15 min</span></h3>
+                    
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <div class="p-3 border rounded-3 bg-body-tertiary h-100">
+                                <h4 class="h6 fw-bold text-success"><i class="bi bi-people-fill me-2"></i>Fork vs. Clone / Collaborators</h4>
+                                <p class="small text-muted mb-0"><strong>Colaboradores:</strong> Permitir a un compañero/a acceso directo de escritura para trabajar conjuntamente sobre el mismo repositorio sin necesidad de bifurcarlo.</p>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="p-3 border rounded-3 bg-body-tertiary h-100">
+                                <h4 class="h6 fw-bold text-primary"><i class="bi bi-exclamation-circle me-2"></i>Issues (Tareas/Bugs)</h4>
+                                <p class="small text-muted mb-0">La lista centralizada de tareas pendientes, errores detectados y mejoras sugeridas dentro del panel del proyecto.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 0.3.2 Juego del restaurante -->
+            <div id="sec-0-3-2" class="card glass-card border-success">
+                <div class="card-body">
+                    <h3 class="h5 text-success mb-3"><i class="bi bi-controller me-2"></i>2. Proyecto práctico en parejas <span class="badge bg-secondary fs-6 ms-2">45 min</span></h3>
+                    <h4 class="h6 fw-bold mb-3">Dinámica: "El juego del restaurante/menú"</h4>
+
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <div class="p-3 border rounded-3 bg-body-tertiary h-100">
+                                <span class="badge bg-success mb-2">Rol: Alumno A</span>
+                                <ol class="small mb-0 ps-3">
+                                    <li class="mb-2">Crea un repositorio llamado <code>menu-restaurante</code> con un archivo <code>menu.txt</code> que contenga 2 platos básicos.</li>
+                                    <li class="mb-2">Invita a <strong>Alumno B</strong> como colaborador/a en GitHub.</li>
+                                    <li class="mb-2">Crea un <em>Issue</em> con el título: <code>"Añadir sección de postres"</code>.</li>
+                                    <li>Revisa el código enviado, deja un comentario de revisión y realiza el <em>Merge</em>.</li>
+                                </ol>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="p-3 border rounded-3 bg-body-tertiary h-100">
+                                <span class="badge bg-primary mb-2">Rol: Alumno B</span>
+                                <ol class="small mb-0 ps-3">
+                                    <li class="mb-2">Acepta la invitación de colaboración recibida por correo o notificación.</li>
+                                    <li class="mb-2">Se asigna el <em>Issue</em> creado por Alumno A.</li>
+                                    <li class="mb-2">Crea una rama llamada <code>seccion-postres</code> y añade la carta de postres al archivo.</li>
+                                    <li>Abre un <em>Pull Request</em> vinculando el Issue y etiquetando a <strong>Alumno A</strong> para su revisión.</li>
+                                </ol>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 0.4: SESIÓN 4 -->
+        <section id="sec-0-4" class="mb-5">
+            <div class="section-header d-flex align-items-center gap-2">
+                <i class="bi bi-4-circle-fill fs-3 text-success"></i>
+                <h2 class="h3 mb-0">Sesión 4 (Opcional / Avanzada): Publicación Web y Portafolio</h2>
+            </div>
+
+            <div class="card glass-card mb-4">
+                <div class="card-body">
+                    <h3 class="h5 text-success mb-3">1. GitHub Pages <span class="badge bg-secondary fs-6 ms-2">20 min</span></h3>
+                    <div class="row align-items-center">
+                        <div class="col-md-8">
+                            <p class="small text-muted mb-2"><strong>Concepto:</strong> Servicio gratuito de alojamiento que permite publicar sitios web estáticos (HTML, CSS y JavaScript) directamente desde un repositorio de GitHub en cuestión de minutos.</p>
+                            <p class="small text-muted mb-0"><strong>Demostración:</strong> Subir un archivo <code>index.html</code> básico a la rama principal y activar GitHub Pages accediendo a la configuración del repositorio (<em>Settings -&gt; Pages</em>).</p>
+                        </div>
+                        <div class="col-md-4 text-center mt-3 mt-md-0">
+                            <div class="p-3 border rounded bg-body-tertiary">
+                                <i class="bi bi-globe display-4 text-success d-block mb-2"></i>
+                                <span class="badge bg-success">Hosting Gratis</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 0.4.2 Proyecto Integrador -->
+            <div id="sec-0-4-2" class="card glass-card border-success">
+                <div class="card-body">
+                    <h3 class="h5 text-success mb-3"><i class="bi bi-check2-square me-2"></i>2. Proyecto Integrador Final <span class="badge bg-secondary fs-6 ms-2">40 min</span></h3>
+                    <div class="p-3 border-start border-4 border-success bg-success bg-opacity-10 rounded-end mb-4">
+                        <h4 class="h6 fw-bold text-success"><i class="bi bi-send-check me-2"></i>Entregable Esperado</h4>
+                        <p class="small mb-0">Cada alumno/a debe subir un mini sitio web (o una landing page personal) a un repositorio de GitHub y activar **GitHub Pages** para obtener una URL pública e interactiva compartible.</p>
+                    </div>
+
+                    <h4 class="h6 fw-bold mb-3">Checklist de Evaluación</h4>
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle border">
+                            <thead class="table-success">
+                                <tr>
+                                    <th style="width: 10%;">Estado</th>
+                                    <th style="width: 40%;">Criterio de Evaluación</th>
+                                    <th style="width: 50%;">Detalle de Validación</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="text-center"><i class="bi bi-square fs-5 text-muted"></i></td>
+                                    <td><strong>Nombre del Repositorio</strong></td>
+                                    <td>Uso de un nombre claro, descriptivo y sin espacios ni caracteres especiales.</td>
+                                </tr>
+                                <tr>
+                                    <td class="text-center"><i class="bi bi-square fs-5 text-muted"></i></td>
+                                    <td><strong>Estructura del README.md</strong></td>
+                                    <td>Inclusión de título, descripción del proyecto, tecnologías usadas y enlace al despliegue.</td>
+                                </tr>
+                                <tr>
+                                    <td class="text-center"><i class="bi bi-square fs-5 text-muted"></i></td>
+                                    <td><strong>Historial de Commits</strong></td>
+                                    <td>Existencia de al menos 2 <em>commits</em> con mensajes descriptivos y acordes a los cambios.</td>
+                                </tr>
+                                <tr>
+                                    <td class="text-center"><i class="bi bi-square fs-5 text-muted"></i></td>
+                                    <td><strong>Flujo de Ramas y PR</strong></td>
+                                    <td>Uso documentado de al menos una rama secundaria y un <em>Pull Request</em> integrado.</td>
+                                </tr>
+                                <tr>
+                                    <td class="text-center"><i class="bi bi-square fs-5 text-muted"></i></td>
+                                    <td><strong>Despliegue Funcional</strong></td>
+                                    <td>URL pública de GitHub Pages operativa mostrando el sitio web estático.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="mt-5 py-4 text-center border-top text-muted small">
+            <div class="d-flex align-items-center justify-content-center gap-2 mb-2">
+                <img src="iesfuengirola1_logo.jpeg" alt="Logo I.E.S. Fuengirola 1" style="height: 25px;" onerror="this.style.display='none'">
+                <span class="fw-semibold">I.E.S. Fuengirola 1</span>
+            </div>
+            <p class="mb-0">UNIDAD 0: Introducción a GitHub - "GitHub sin Miedo: De Cero a Colaborar en Equipo"</p>
+            <p class="mb-0">Plataforma interactiva web HTML5 &amp; Bootstrap 5</p>
+        </footer>
+    </main>
+
+    <!-- Bootstrap JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Highlight.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+
+    <!-- Custom Interactive Logic -->
+    <script>
+        // Reading Progress Bar
+        window.onscroll = function() {
+            let winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            let height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            let scrolled = (winScroll / height) * 100;
+            document.getElementById("progress-bar").style.width = scrolled + "%";
+        };
+
+        // Dark / Light Mode Toggle
+        const themeToggleBtn = document.getElementById('themeToggle');
+        const themeIcon = document.getElementById('themeIcon');
+        
+        themeToggleBtn.addEventListener('click', () => {
+            const currentTheme = document.documentElement.getAttribute('data-bs-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            document.documentElement.setAttribute('data-bs-theme', newTheme);
+            themeIcon.className = newTheme === 'dark' ? 'bi bi-sun-fill' : 'bi bi-moon-stars-fill';
+        });
+
+        // Sidebar Mobile Toggle
+        const sidebar = document.getElementById('sidebar');
+        const sidebarToggle = document.getElementById('sidebarToggle');
+        if (sidebarToggle) {
+            sidebarToggle.addEventListener('click', () => {
+                sidebar.classList.toggle('show');
+            });
+        }
+
+        // Quick Search Filter
+        document.getElementById('quickSearch').addEventListener('input', function(e) {
+            let query = e.target.value.toLowerCase();
+            let sections = document.querySelectorAll('main section, main .card');
+            sections.forEach(sec => {
+                if(sec.innerText.toLowerCase().includes(query)) {
+                    sec.style.display = '';
+                } else {
+                    sec.style.display = 'none';
+                }
+            });
+        });
+    </script>
+</body>
+</html>

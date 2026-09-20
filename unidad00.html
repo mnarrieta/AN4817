@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="es" data-bs-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UNIDAD 0: Markdown y Spec-Driven Development (SDD)</title>
+    
+    <!-- Bootstrap 5.3 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+    <!-- Highlight.js CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+
+    <!-- MathJax Configuration -->
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']]
+            },
+            svg: {
+                fontCache: 'global'
+            }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+    <style>
+        :root {
+            --sidebar-width: 280px;
+            --top-navbar-height: 65px;
+            --font-main: 'Inter', system-ui, -apple-system, sans-serif;
+            --font-code: 'Fira Code', monospace;
+        }
+
+        body {
+            font-family: var(--font-main);
+            padding-top: var(--top-navbar-height);
+            position: relative;
+        }
+
+        /* Reading Progress Bar */
+        #progress-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: transparent;
+            z-index: 1050;
+        }
+
+        #progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #198754, #0d6efd, #0dcaf0);
+            width: 0%;
+            transition: width 0.1s ease-out;
+        }
+
+        /* Top Navbar */
+        .navbar-custom {
+            height: var(--top-navbar-height);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(0,0,0,0.1);
+        }
+        [data-bs-theme="dark"] .navbar-custom {
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .institute-logo {
+            height: 38px;
+            width: auto;
+            object-fit: contain;
+            border-radius: 4px;
+        }
+
+        .sidebar-logo {
+            height: 45px;
+            width: auto;
+            object-fit: contain;
+            border-radius: 4px;
+        }
+
+        /* Sidebar Styling */
+        #sidebar {
+            width: var(--sidebar-width);
+            position: fixed;
+            top: var(--top-navbar-height);
+            bottom: 0;
+            left: 0;
+            z-index: 100;
+            padding: 1rem 0;
+            overflow-y: auto;
+            border-right: 1px solid rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        [data-bs-theme="dark"] #sidebar {
+            border-right: 1px solid rgba(255, 255, 255, 0.1);
+            background-color: #121416;
+        }
+
+        .sidebar-nav .nav-link {
+            font-size: 0.88rem;
+            padding: 0.5rem 1.25rem;
+            color: var(--bs-body-color);
+            border-left: 3px solid transparent;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.2s ease;
+        }
+
+        .sidebar-nav .nav-link:hover, 
+        .sidebar-nav .nav-link.active {
+            color: #198754;
+            background-color: rgba(25, 135, 84, 0.08);
+            border-left-color: #198754;
+            font-weight: 600;
+        }
+
+        .sidebar-heading {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            padding: 0.75rem 1.25rem 0.25rem;
+            color: #6c757d;
+            font-weight: 700;
+        }
+
+        /* Main Content Container */
+        #main-content {
+            margin-left: var(--sidebar-width);
+            padding: 2.5rem;
+            max-width: 1200px;
+        }
+
+        @media (max-width: 991.98px) {
+            #sidebar {
+                transform: translateX(-100%);
+            }
+            #sidebar.show {
+                transform: translateX(0);
+            }
+            #main-content {
+                margin-left: 0;
+                padding: 1.5rem 1rem;
+            }
+        }
+
+        /* Card and Components Enhancements */
+        .glass-card {
+            border-radius: 0.75rem;
+            border: 1px solid rgba(0, 0, 0, 0.08);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        [data-bs-theme="dark"] .glass-card {
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .glass-card:hover {
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.06);
+        }
+
+        .section-header {
+            border-bottom: 2px solid rgba(25, 135, 84, 0.2);
+            padding-bottom: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        pre code {
+            font-family: var(--font-code) !important;
+            border-radius: 0.5rem;
+            font-size: 0.88rem;
+        }
+
+        .math-block {
+            overflow-x: auto;
+            padding: 1rem;
+            background-color: rgba(25, 135, 84, 0.04);
+            border-radius: 0.5rem;
+            border-left: 4px solid #198754;
+            margin: 1rem 0;
+        }
+
+        .copy-container {
+            position: relative;
+        }
+
+        .copy-btn {
+            position: absolute;
+            top: 0.5rem;
+            right: 0.5rem;
+            z-index: 10;
+        }
+    </style>
+</head>
+<body data-bs-spy="scroll" data-bs-target="#sidebar-menu" data-bs-offset="100" tabindex="0">
+
+    <!-- Reading Progress Bar -->
+    <div id="progress-container">
+        <div id="progress-bar"></div>
+    </div>
+
+    <!-- Top Navigation Bar -->
+    <nav class="navbar navbar-expand-lg fixed-top navbar-custom bg-body">
+        <div class="container-fluid px-3">
+            <button class="btn btn-outline-secondary d-lg-none me-2" type="button" id="sidebarToggle" aria-label="Toggle Navigation">
+                <i class="bi bi-list fs-5"></i>
+            </button>
+            
+            <a class="navbar-brand d-flex align-items-center gap-2 fw-bold text-success" href="#">
+                <img src="iesfuengirola1_logo.jpeg" alt="Logo I.E.S. Fuengirola 1" class="institute-logo" onerror="this.src='https://placehold.co/100x100/198754/ffffff?text=IES+F1'">
+                <span>UNIDAD 0: Markdown & SDD</span>
+            </a>
+
+            <div class="d-flex align-items-center gap-2 ms-auto">
+                <!-- Search Box -->
+                <div class="input-group d-none d-md-flex" style="width: 240px;">
+                    <span class="input-group-text bg-body-tertiary border-end-0"><i class="bi bi-search"></i></span>
+                    <input type="text" id="quickSearch" class="form-control bg-body-tertiary border-start-0" placeholder="Buscar concepto...">
+                </div>
+
+                <!-- Theme Toggle Button -->
+                <button class="btn btn-outline-secondary rounded-circle ms-2" id="themeToggle" aria-label="Cambiar Tema">
+                    <i class="bi bi-moon-stars-fill" id="themeIcon"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Sidebar Layout -->
+    <aside id="sidebar" class="bg-body">
+        <div class="px-3 pb-3 mb-2 border-bottom d-flex align-items-center gap-2">
+            <img src="iesfuengirola1_logo.jpeg" alt="Logo I.E.S. Fuengirola 1" class="sidebar-logo" onerror="this.src='https://placehold.co/100x100/198754/ffffff?text=IES+F1'">
+            <div>
+                <div class="fw-bold fs-6 leading-tight">I.E.S. Fuengirola 1</div>
+                <small class="text-muted d-block" style="font-size: 0.72rem;">Departamento de Informática</small>
+            </div>
+        </div>
+
+        <nav id="sidebar-menu" class="sidebar-nav">
+            <div class="sidebar-heading">1. Sintaxis Markdown</div>
+            <a class="nav-link" href="#sec-0-1"><i class="bi bi-filetype-md"></i> 0.1. Sintaxis Esencial</a>
+            <a class="nav-link" href="#sec-0-1-2"><i class="bi bi-code-square"></i> 0.1.2. Bloques y Tablas</a>
+
+            <div class="sidebar-heading">2. Utilidad y Usos Reales</div>
+            <a class="nav-link" href="#sec-0-2-1"><i class="bi bi-github"></i> 0.2.1. Casos de Uso</a>
+            <a class="nav-link" href="#sec-0-2-2"><i class="bi bi-lightning-charge"></i> 0.2.2. Ventajas Clave</a>
+
+            <div class="sidebar-heading">3. Spec-Driven Dev</div>
+            <a class="nav-link" href="#sec-0-3-1"><i class="bi bi-diagram-3"></i> 0.3.1. Concepto e Importancia</a>
+            <a class="nav-link" href="#sec-0-3-2"><i class="bi bi-robot"></i> 0.3.2. Caso de Uso en IA</a>
+
+            <div class="sidebar-heading">4. Ejemplos Prácticos</div>
+            <a class="nav-link" href="#sec-0-4-1"><i class="bi bi-window-sidebar"></i> 0.4.1. Spec Front-end</a>
+            <a class="nav-link" href="#sec-0-4-2"><i class="bi bi-server"></i> 0.4.2. Spec Back-end API</a>
+            <a class="nav-link" href="#sec-0-4-3"><i class="bi bi-pencil-square"></i> 0.4.3. Ejercicios Propuestos</a>
+        </nav>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main id="main-content">
+        
+        <!-- Header Hero Banner -->
+        <div class="p-4 p-md-5 mb-5 rounded-4 bg-success bg-gradient text-white shadow-sm">
+            <div class="row align-items-center">
+                <div class="col-lg-8">
+                    <span class="badge bg-light text-success mb-2 fw-semibold">Especialización en Informática - I.E.S. Fuengirola 1</span>
+                    <h1 class="display-5 fw-bold mb-3">UNIDAD 0.A: Markdown y Spec-Driven Development (SDD)</h1>
+                    <p class="lead mb-0">Guía completa y estructurada sobre la sintaxis de Markdown, sus casos de uso reales y la metodología Spec-Driven Development aplicada a la generación de prompts deterministas para IA.</p>
+                </div>
+                <div class="col-lg-4 text-center mt-4 mt-lg-0">
+                    <img src="iesfuengirola1_logo.jpeg" alt="Logo I.E.S. Fuengirola 1" class="img-fluid rounded-3 bg-white p-2 shadow-sm" style="max-height: 120px;" onerror="this.style.display='none'">
+                    <i class="bi bi-filetype-md display-1 opacity-75 d-block mt-2"></i>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECTION 1: SINTAXIS ESSENCIAL DE MARKDOWN -->
+        <section id="sec-0-1" class="mb-5">
+            <div class="section-header d-flex align-items-center gap-2">
+                <i class="bi bi-filetype-md fs-3 text-success"></i>
+                <h2 class="h3 mb-0">0.1. Estructura Básica de un Fichero Markdown</h2>
+            </div>
+
+            <div class="card glass-card mb-4">
+                <div class="card-body">
+                    <h3 class="h5 text-success mb-3">0.1.1. Sintaxis Esencial de Markdown</h3>
+                    <p>Markdown es un lenguaje de marcado ligero que permite añadir formato a un texto plano utilizando una sintaxis sencilla y highly legible tanto para humanos como para analizadores de IA.</p>
+
+                    <!-- Tabla Comparativa Sintaxis vs Renderizado -->
+                    <div class="table-responsive my-4">
+                        <table class="table table-hover align-middle border">
+                            <thead class="table-success">
+                                <tr>
+                                    <th style="width: 50%;">Sintaxis Markdown (Código)</th>
+                                    <th style="width: 50%;">Visualización (Renderizado)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><code># Encabezado Nivel 1</code><br><code>## Encabezado Nivel 2</code></td>
+                                    <td><h4 class="m-0 fw-bold">Encabezado Nivel 1</h4><h6 class="m-0 text-muted">Encabezado Nivel 2</h6></td>
+                                </tr>
+                                <tr>
+                                    <td><code>**Texto en Negrita**</code> y <code>*Texto en Cursiva*</code></td>
+                                    <td><strong>Texto en Negrita</strong> y <em>Texto en Cursiva</em></td>
+                                </tr>
+                                <tr>
+                                    <td><code>[Documentación Bootstrap](https://getbootstrap.com)</code></td>
+                                    <td><a href="https://getbootstrap.com" target="_blank" class="text-success">Documentación Bootstrap</a></td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <code>- Elemento de lista 1</code><br>
+                                        <code>- Elemento de lista 2</code>
+                                    </td>
+                                    <td>
+                                        <ul class="mb-0 ps-3">
+                                            <li>Elemento de lista 1</li>
+                                            <li>Elemento de lista 2</li>
+                                        </ul>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><code>`const x = 42;`</code> (Código en línea)</td>
+                                    <td><code>const x = 42;</code></td>
+                                </tr>
+                                <tr>
+                                    <td><code>> Cita o bloque de contexto</code></td>
+                                    <td><blockquote class="blockquote border-start border-success border-3 ps-3 m-0 fs-6 text-muted">Cita o bloque de contexto</blockquote></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 0.1.2 BLOQUES DE CÓDIGO Y TABLAS -->
+            <div id="sec-0-1-2" class="card glass-card">
+                <div class="card-body">
+                    <h3 class="h5 text-success mb-3"><i class="bi bi-code-square me-2"></i>0.1.2. Bloques de Código y Estructuras Avanzadas</h3>
+                    
+                    <div class="row g-4">
+                        <div class="col-md-6">
+                            <div class="p-3 border rounded-3 bg-body-tertiary h-100">
+                                <h4 class="h6 fw-bold text-success mb-2"><i class="bi bi-code-slash me-1"></i> Bloques de Código con Sintaxis</h4>
+                                <p class="small text-muted mb-3">Utiliza triple comilla invertida (<code>```</code>) seguida del identificador del lenguaje para habilitar el resaltado sintáctico.</p>
+                                <pre class="mb-0"><code class="language-markdown">```javascript
+function calculateTotal(items) {
+  return items.reduce((acc, item) => acc + item.price, 0);
+}
+```</code></pre>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="p-3 border rounded-3 bg-body-tertiary h-100">
+                                <h4 class="h6 fw-bold text-success mb-2"><i class="bi bi-table me-1"></i> Tablas de Datos Estructurados</h4>
+                                <p class="small text-muted mb-3">Define columnas separando los campos con tuberías (<code>|</code>) y guiones para la fila de encabezado.</p>
+                                <pre class="mb-0"><code class="language-markdown">| Parámetro | Tipo   | Requerido |
+| --------- | ------ | --------- |
+| id        | String | Sí        |
+| status    | Enum   | No        |</code></pre>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 2: UTILIDAD DEL FORMATO Y USOS REALES -->
+        <section id="sec-0-2-1" class="mb-5">
+            <div class="section-header d-flex align-items-center gap-2">
+                <i class="bi bi-journal-text fs-3 text-success"></i>
+                <h2 class="h3 mb-0">0.2. Utilidad del Formato Markdown y Usos Reales</h2>
+            </div>
+
+            <div class="card glass-card mb-4">
+                <div class="card-body">
+                    <h3 class="h5 text-success mb-3">0.2.1. Casos de Uso Reales en la Industria del Software</h3>
+                    <p>Su diseño independiente de la plataforma lo convierte en el formato predilecto para ingenieros de software, gestores de conocimiento y sistemas de Inteligencia Artificial.</p>
+
+                    <div class="row g-3 my-3">
+                        <div class="col-md-6 col-lg-3">
+                            <div class="p-3 border rounded-3 bg-body-tertiary h-100">
+                                <div class="badge bg-primary mb-2"><i class="bi bi-github"></i> GitHub</div>
+                                <h4 class="h6 fw-bold">Documentación de Código</h4>
+                                <p class="small text-muted mb-0">Ficheros <code>README.md</code> en repositorios. Puerta de entrada principal para proyectos open-source y empresariales.</p>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-lg-3">
+                            <div class="p-3 border rounded-3 bg-body-tertiary h-100">
+                                <div class="badge bg-info text-dark mb-2"><i class="bi bi-globe"></i> Web Estática</div>
+                                <h4 class="h6 fw-bold">Sitios Web Estáticos</h4>
+                                <p class="small text-muted mb-0">Base de contenidos para generadores (SSG) como Astro, Hugo, Docusaurus y Jekyll, desacoplando contenido y diseño.</p>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-lg-3">
+                            <div class="p-3 border rounded-3 bg-body-tertiary h-100">
+                                <div class="badge bg-warning text-dark mb-2"><i class="bi bi-journal-bookmark-fill"></i> PKM</div>
+                                <h4 class="h6 fw-bold">Gestión de Conocimiento</h4>
+                                <p class="small text-muted mb-0">Software de notas conectadas como Obsidian, Logseq o Notion. Garantiza bases de conocimiento locales y duraderas.</p>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-lg-3">
+                            <div class="p-3 border rounded-3 bg-success bg-opacity-10 border-success h-100">
+                                <div class="badge bg-success mb-2"><i class="bi bi-robot"></i> Prompting</div>
+                                <h4 class="h6 fw-bold text-success">Ingeniería de Prompts</h4>
+                                <p class="small text-muted mb-0">Estructuración de contexto, restricciones y esquemas de entrada/salida para LLMs y Agentes de IA.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 0.2.2 VENTAJAS CLAVE -->
+            <div id="sec-0-2-2" class="card glass-card">
+                <div class="card-body">
+                    <h3 class="h5 text-success mb-3"><i class="bi bi-lightning-charge me-2"></i>0.2.2. Ventajas Clave de Markdown</h3>
+                    <ul class="list-group list-group-flush small">
+                        <li class="list-group-item bg-transparent"><i class="bi bi-check-circle-fill text-success me-2"></i><strong>Ultraligero:</strong> Ocupa un tamaño mínimo en disco al ser texto plano.</li>
+                        <li class="list-group-item bg-transparent"><i class="bi bi-check-circle-fill text-success me-2"></i><strong>Git-Friendly:</strong> Se integra perfectamente con control de versiones (Git) para rastrear cambios línea por línea (diffs limpios).</li>
+                        <li class="list-group-item bg-transparent"><i class="bi bi-check-circle-fill text-success me-2"></i><strong>Portabilidad Total:</strong> Legible directamente en cualquier editor sin necesidad de software propietario.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 3: SPEC-DRIVEN DEVELOPMENT -->
+        <section id="sec-0-3-1" class="mb-5">
+            <div class="section-header d-flex align-items-center gap-2">
+                <i class="bi bi-diagram-3 fs-3 text-success"></i>
+                <h2 class="h3 mb-0">0.3. Spec-Driven Development (SDD) e Inteligencia Artificial</h2>
+            </div>
+
+            <div class="card glass-card mb-4">
+                <div class="card-body">
+                    <h3 class="h5 text-success mb-3">0.3.1. Concepto e Importancia de SDD</h3>
+                    <p>El <strong>Desarrollo Guiado por Especificaciones (Spec-Driven Development)</strong> es un paradigma que antepone la definición formal, estructurada y detallada de los requisitos de un sistema mediante un documento "Spec" antes de escribir código.</p>
+                    <p>Aplicado a la Inteligencia Artificial, el SDD convierte el prompting informal en un contrato estricto de ingeniería de software.</p>
+
+                    <div class="row g-3 my-3">
+                        <div class="col-md-6">
+                            <div class="p-3 border border-danger border-opacity-25 rounded-3 bg-danger bg-opacity-10 h-100">
+                                <h4 class="h6 fw-bold text-danger"><i class="bi bi-x-circle-fill me-2"></i>Prompting Informal (Chat al vuelo)</h4>
+                                <p class="small text-muted mb-0">Produce alucinaciones, respuestas inconsistentes, código incompleto y falta de respeto a las restricciones de arquitectura.</p>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="p-3 border border-success border-opacity-25 rounded-3 bg-success bg-opacity-10 h-100">
+                                <h4 class="h6 fw-bold text-success"><i class="bi bi-check-circle-fill me-2"></i>Spec-Driven Prompting (Markdown Formal)</h4>
+                                <p class="small text-muted mb-0">Aporta determinismo, define tipos de datos explícitos, impone manejo de errores y limita el ámbito de la respuesta del modelo.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 0.3.2 CASO DE USO EN IA -->
+            <div id="sec-0-3-2" class="card glass-card">
+                <div class="card-body">
+                    <h3 class="h5 text-success mb-3"><i class="bi bi-robot me-2"></i>0.3.2. El Flujo de Trabajo SDD en la Definición de Prompts</h3>
+                    <p class="small text-muted">Secuencia paso a paso para ejecutar prompts estructurados en entornos de IA:</p>
+
+                    <ol class="list-group list-group-numbered list-group-flush small mb-3">
+                        <li class="list-group-item bg-transparent"><strong>Redacción del Spec (Markdown):</strong> El desarrollador define roles, contextos, restricciones, entradas y salidas estructuradas.</li>
+                        <li class="list-group-item bg-transparent"><strong>Inyección de Contexto:</strong> Se envía el documento <code>.md</code> como sistema o prompt base a modelos como GPT-4o, Claude 3.5, Gemini o Llama 3 local.</li>
+                        <li class="list-group-item bg-transparent"><strong>Generación Determinista:</strong> La IA procesa la estructura y genera exactamente la solución solicitada sin improvisar.</li>
+                        <li class="list-group-item bg-transparent"><strong>Validación contra Contrato:</strong> Se comprueba la respuesta frente a los criterios de aceptación fijados en el Spec.</li>
+                    </ol>
+
+                    <div class="math-block">
+                        $$\text{Prompt Calidad} = \text{Contexto Claro} + \text{Restricciones Explícitas} + \text{Formato Salida Definido}$$
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 4: EJEMPLOS DE SPEC EN MARKDOWN -->
+        <section id="sec-0-4-1" class="mb-5">
+            <div class="section-header d-flex align-items-center gap-2">
+                <i class="bi bi-code-slash fs-3 text-success"></i>
+                <h2 class="h3 mb-0">0.4. Ejemplos Prácticos de SPEC en Markdown para IA</h2>
+            </div>
+
+            <!-- 0.4.1 SPEC FRONTEND UI -->
+            <div class="card glass-card mb-4">
+                <div class="card-body">
+                    <h3 class="h5 text-success mb-3"><i class="bi bi-window-sidebar me-2"></i>0.4.1. Ejemplo 1: Spec Front-end / UI Component</h3>
+                    <p class="small text-muted">Ejemplo funcional de especificación para solicitar a una IA la creación de un componente interactivo:</p>
+
+                    <div class="copy-container">
+                        <button class="btn btn-sm btn-outline-success copy-btn" onclick="copyCode('spec-fe-code', this)">
+                            <i class="bi bi-clipboard"></i> Copiar
+                        </button>
+                        <pre><code id="spec-fe-code" class="language-markdown"># [SPEC-UI-001] Componente Filtro de Búsqueda de Productos
+
+## 1. ROL Y OBJETIVO
+- **Rol:** Senior Frontend Engineer especializado en React y Tailwind CSS.
+- **Objetivo:** Crear un componente funcional de barra de búsqueda con filtros combinados (Categoría, Precio, Stock).
+
+## 2. REQUISITOS TÉCNICOS
+- **Framework:** React (Functional Components, Hooks)
+- **Estilos:** Tailwind CSS (Sin CSS custom)
+- **Estado:** Gestor local con `useState` o `useReducer`
+- **Accesibilidad:** Cumplimiento de estándares WCAG 2.1 AA (atributos aria, navegación por teclado).
+
+## 3. ESPECIFICACIÓN DEL COMPONENTE
+```typescript
+interface FilterState {
+  searchQuery: string;
+  category: 'all' | 'electronics' | 'clothing' | 'books';
+  maxPrice: number;
+  inStockOnly: boolean;
+}
+      </div>
+<!-- 0.4.2 SPEC BACKEND API -->
+      <div id="sec-0-4-2" class="card glass-card mb-4">
+          <div class="card-body">
+              <h3 class="h5 text-success mb-3"><i class="bi bi-server me-2"></i>0.4.2. Ejemplo 2: Spec Back-end / REST API Service</h3>
+              <p class="small text-muted">Ejemplo formal de especificación para la generación de un servicio backend seguro:</p>
+
+              <div class="copy-container">
+                  <button class="btn btn-sm btn-outline-success copy-btn" onclick="copyCode('spec-be-code', this)">
+                      <i class="bi bi-clipboard"></i> Copiar
+                  </button>
+                  <pre><code id="spec-be-code" class="language-markdown"># [SPEC-BE-002] Módulo de Autenticación de Usuarios
+
+
+                  </div>
+              </div>
+          </div>
+      </div>
+
+<!-- 0.4.3 EJERCICIOS PROPUESTOS -->
+      <div id="sec-0-4-3" class="card glass-card border-success">
+          <div class="card-body">
+              <h3 class="h5 text-success mb-3"><i class="bi bi-pencil-square me-2"></i>0.4.3. Ejercicios Prácticos Propuestos</h3>
+              <p class="small text-muted mb-4">Aplica la metodología Spec-Driven Development (SDD) redactando los siguientes documentos de especificación en formato Markdown:</p>
+
+              <div class="row g-4">
+                  <!-- Ejercicio 1 -->
+                  <div class="col-md-6">
+                      <div class="p-3 border rounded-3 bg-body-tertiary h-100">
+                          <div class="badge bg-success mb-2">Ejercicio 1</div>
+                          <h4 class="h6 fw-bold">Spec para un Microservicio de Notificaciones</h4>
+                          <p class="small text-muted">Redacta una especificación en Markdown para solicitar a un LLM la creación de un microservicio que envíe correos electrónicos y notificaciones Push.</p>
+                          <ul class="small text-muted ps-3 mb-0">
+                              <li>Define los roles, framework objetivo (Node.js/Express, Go o Python) y cola de tareas (Redis/BullMQ o Celery).</li>
+                              <li>Incluye una tabla con los parámetros de la petición (destinatario, plantilla, variables).</li>
+                              <li>Especifica el manejo de reintentos y errores de proveedor.</li>
+                          </ul>
+                      </div>
+                  </div>
+
+                  <!-- Ejercicio 2 -->
+                  <div class="col-md-6">
+                      <div class="p-3 border rounded-3 bg-body-tertiary h-100">
+                          <div class="badge bg-primary mb-2">Ejercicio 2</div>
+                          <h4 class="h6 fw-bold">Spec para un Componente de Dashboard en Tiempo Real</h4>
+                          <p class="small text-muted">Crea un documento Spec orientado a Frontend para generar un panel interactivo de métricas de servidor.</p>
+                          <ul class="small text-muted ps-3 mb-0">
+                              <li>Establece el uso de WebSockets o Server-Sent Events (SSE) para recibir datos continuos.</li>
+                              <li>Define interfaces TypeScript para la telemetría (uso de CPU, RAM, peticiones/seg).</li>
+                              <li>Indica restricciones estéticas, gráficos requeridos (Chart.js / Recharts) y comportamiento en caso de desconexión.</li>
+                          </ul>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="mt-5 py-4 text-center border-top text-muted small">
+      <div class="d-flex align-items-center justify-content-center gap-2 mb-2">
+          <img src="iesfuengirola1_logo.jpeg" alt="Logo I.E.S. Fuengirola 1" style="height: 25px;" onerror="this.style.display='none'">
+          <span class="fw-semibold">I.E.S. Fuengirola 1</span>
+      </div>
+      <p class="mb-0">Unidad 0: Markdown y Spec-Driven Development (SDD)</p>
+      <p class="mb-0">Plataforma interactiva web HTML5 & Bootstrap 5</p>
+  </footer>
+  </main>
+  </body>
+  </html>
