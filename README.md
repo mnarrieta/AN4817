@@ -26,7 +26,11 @@ Este repositorio está destinado a informar sobre el módulo de ciclo formativo 
 ## Unidades Didácticas
 | Número | Nombre | Evaluación |
 | :--- | :--- | :--- |
-| 1 | Introducción a IA | Primera |
+| 0 | **Conceptos básicos** | Primera |
+| 1 | **Introducción a IA** | Primera |
+| 2 | **SaaS e IA local** | Priemra |
+
+
 ---
 ## Pruebas Graficas
 ![Logotipo IES](https://www.iesfuengirola1.es/wp-content/uploads/2023/03/logo_web_p-1.png)
