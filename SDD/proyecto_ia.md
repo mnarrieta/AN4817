@@ -19,6 +19,7 @@ El objetivo del proyecto es desplegar una infraestructura de Inteligencia Artifi
 Los servicios a desplegar son los siguientes:
 | Servicio | Tipo de contenedor | Puerto interno | Puerto externo (Host) | Propósito principal | Dependencias |
 | :--- | :--- | :--- | :--- | :--- | :--- |
+| **Ollama** |  |  |  |  |  |
 
 
 ## 3. Arquitectura de red y datos
