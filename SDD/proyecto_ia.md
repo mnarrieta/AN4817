@@ -19,13 +19,14 @@ El objetivo del proyecto es desplegar una infraestructura de Inteligencia Artifi
 Los servicios a desplegar son los siguientes:
 | Servicio | Nombre de contenedor | Puerto interno | Puerto externo (Host) | Propósito principal | Dependencias |
 | :--- | :--- | :--- | :--- | :--- | :--- |
-| **Ollama** | ollama | 11434 |  |  |  |
-| **Open WebUI** | openwebui | 8080 |  |  |  |
-| **Hermes Agent** | hermes-agent |  |  |  |  |
-| **OpenCode** | opencode |  |  |  |  |
-| **ComfyUI** | comfyui |  |  |  |  |
-| **YOLO** | yolo | yolo |  |  |  |
-| **SearXNG** | searxng |  |  |  |  |
+| **Ollama** | ollama | 11434 | 11434 | Motor de LLMs locales y servidor de API | GPU NVIDIA y Driver (CUDA) |
+| **Open WebUI** | openwebui | 8080 | 3000 | Interfaz web tipo ChatGPT para interactuar con LLMs | Ollama, SearXNG, ComfyUI |
+| **Hermes Agent** | hermes-agent | 8000 | 8000 | Arnés para el motor LLMs, Agente autónomo para realizar tareas complejas | Ollama, SearXNG, ComfyUI |
+| **OpenCode** | opencode | 8080 | 8443 |  |  |
+| **ComfyUI** | comfyui | 8188 | 8188 |  |  |
+| **YOLO** | yolo | 5000 | 5000 |  |  |
+| **SearXNG** | searxng | 8080 | 8080 |  |  |
+| **RAG** | searxng | 8080 | 8080 |  |  | 
 
 ## 3. Arquitectura de red y datos
 
