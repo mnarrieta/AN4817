@@ -10,8 +10,23 @@ tags: [markdown,ia,prompt,local,SDD]
 
 - **Versión:** 1.0
 - **Rol del creador:** Administrador de sistemas
-- **Proposito:**
+- **Propósito:** Definir un manual técnico de requisitos y definiendo una arquitectura para la generación de un manual técnico detallado con la instalación, configuración, tests y mantenimiento en formato markdown (.md)
 
+## 1. Visión generl del proyecto
+
+## 2. Servicios, especificaciones  y aplicaciones
+
+## 3. Arquitectura de red y datos
+
+### 3.1. Redes Docker
+
+### 3.2. Volúmenes de datos
+
+## 4. Requisitos de sistema y hardware
+
+## 5. Instrucciones para generar el manual técnico
+
+## 6. Criterios de aceptación
 
 
 
