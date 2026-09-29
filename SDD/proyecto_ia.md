@@ -20,11 +20,11 @@ Los servicios a desplegar son los siguientes:
 | Servicio | Nombre de contenedor | Puerto interno | Puerto externo (Host) | Propósito principal | Dependencias |
 | :--- | :--- | :--- | :--- | :--- | :--- |
 | **Ollama** | ollama | 11434 |  |  |  |
-| **Open WebUI** | openwebui |  |  |  |  |
+| **Open WebUI** | openwebui | 8080 |  |  |  |
 | **Hermes Agent** | hermes-agent |  |  |  |  |
 | **OpenCode** | opencode |  |  |  |  |
 | **ComfyUI** | comfyui |  |  |  |  |
-| **YOLO** |  | yolo |  |  |  |
+| **YOLO** | yolo | yolo |  |  |  |
 | **SearXNG** | searxng |  |  |  |  |
 
 ## 3. Arquitectura de red y datos
