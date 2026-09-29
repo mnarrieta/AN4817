@@ -12,9 +12,12 @@ tags: [markdown,ia,prompt,local,SDD]
 - **Rol del creador:** Administrador de sistemas
 - **Propósito:** Definir un manual técnico de requisitos y definiendo una arquitectura para la generación de un manual técnico detallado con la instalación, configuración, tests y mantenimiento en formato markdown (.md)
 
-## 1. Visión generl del proyecto
+## 1. Visión general del proyecto (Objetivo)
+El objetivo del proyecto es desplegar una infraestructura de Inteligencia Artificial local utilizando contenedores Docker en un sistema operativo Ubuntu Server. Cada servicio residirá en su propio contenedor docker. El sistema dispone de tarjeta gráfica NVIDIA (GPU).
 
 ## 2. Servicios, especificaciones  y aplicaciones
+Los servicios a desplegar son los siguientes:
+|
 
 ## 3. Arquitectura de red y datos
 
