@@ -26,7 +26,7 @@ Los servicios a desplegar son los siguientes:
 | **ComfyUI** | comfyui | 8188 | 8188 | Interfaz web para la generación, edición y procesamiento de imágenes y vídeo | GPU driver, sus propios LLMs |
 | **YOLO** | yolo | 5000 | 5000 | API o herramienta par la visión artifical, detección y reconocimiento de patrones en tiempo real en imágenes | GPU driver, sus propios LLMs |
 | **SearXNG** | searxng | 8080 | 8080 | Metabuscador privado para realizar búsquedas en Internet | GPU driver |
-| **RAG** | searxng | 8080 | 8080 |  |  | 
+| **RAG** | rag | 11434 | 11434 | Técnica para aumentar la capacidad de un modelo de lenguaje LLM con información externa privada | Ollama, documentación externa | 
 
 ## 3. Arquitectura de red y datos
 
