@@ -31,6 +31,10 @@ Los servicios a desplegar son los siguientes:
 ## 3. Arquitectura de red y datos
 
 ### 3.1. Redes Docker
+Red principal que se va a llamar "red-ia" a la que van a pertenecer todos los contenedores para poder comunicarse entre sí. Red en modo "bridge" y crear un sistema de naming (DNS) local del modo siguiente:
+| Servicio | Nombre de contenedor | URL |
+| :--- | :--- | :--- |
+| **Ollama** | ollama | http://ollama:11434 |
 
 ### 3.2. Volúmenes de datos
 
