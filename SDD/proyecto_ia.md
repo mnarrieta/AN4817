@@ -45,7 +45,7 @@ Red principal que se va a llamar "red-ia" a la que van a pertenecer todos los co
 
 ### 3.2. Volúmenes de datos (Persistencia)
 Consiste en "mapear" un sistema de ficheros dentro de cada contenedor a la máquina física que los contiene.
-| Nombre volumen | Direccionamiento | Descripción |
+| Nombre volumen | Unidad mapeada | Descripción |
 | :--- | :--- | :--- |
 | ollama_data | `$HOME/ollama` | almacenamiento modelos LLM |
 | openwebui_data | `$HOME/openwebui` | usuarios, chats, prompts, configuraciones |
@@ -57,8 +57,19 @@ Consiste en "mapear" un sistema de ficheros dentro de cada contenedor a la máqu
 | **RAG** | `$HOME/rag` | Ficheros que se le dotan para aumentar el conocimiento a la IA |
 
 ## 4. Requisitos de sistema y hardware
+1. **SO:** Ubuntu Server 24.04 o 26.04.
+2. **GPU:** Tarjeta gráfica NVIDIA, algunos ordenadores con el modelo 3050, 4060.
+3. **Drivers:** Driver NVIDIA CUDA o nvidia-drivers oficiales.
+4. **Docker:** Sistema de contenedores para cada servicio, docker compose, y docker.
 
 ## 5. Instrucciones para generar el manual técnico
+> **Instrucciones para la generación del documento de salida:**
+> Actúa como un experto en administración de sistemas GNU/Linux y Devops, genera un **Manual de instalación, configuración y operación** exhaustivo y detallado en formato Markdown basado esta especificación.
+> El manual generado debe incluir obligatoriamente las siguientes secciones:
+> 1. **Prerrequisitos e instalación base:** Comandos básicos en Linux para instalar Docker, Docker compose, drivers de NVIDIA CUDA, utilizando repositorios apt.
+> 2. **Estructura del proyecto:** Árbol detallado de directorios para el stack que vamos a montar `$HOME/proyecto`
+> 3. **Ficheros de configuración:** Un `docker-<servicio>.yml` por cada uno de los servicios que vamos a montar donde <servicio> se sustituye por el nombre del contenedor.
+> 4. **Fichero de entorno:** Fichero `.env` con todas las variables del entorno de todos los servicios.
 
 ## 6. Criterios de aceptación
 
