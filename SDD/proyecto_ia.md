@@ -47,14 +47,14 @@ Red principal que se va a llamar "red-ia" a la que van a pertenecer todos los co
 Consiste en "mapear" un sistema de ficheros dentro de cada contenedor a la máquina física que los contiene.
 | Nombre volumen | Direccionamiento | Descripción |
 | :--- | :--- | :--- |
-| ollama_data | `/root/.ollama` | almacenamiento modelos LLM |
-| openwebui_data | `/` | http://openwebui:3000 |
-| **Hermes Agent** | hermes-agent | http://hermesagent:8000 |
-| **OpenCode** | opencode | http://opencode:8443 |
-| **ComfyUI** | comfyui | http://comfyui:8188 | 
-| **YOLO** | yolo | http://yolo:5000 |
-| **SearXNG** | searxng | http://searxng:8080 | 
-| **RAG** | rag | ***Integrado con otros servicios*** |
+| ollama_data | `$HOME/ollama` | almacenamiento modelos LLM |
+| openwebui_data | `$HOME/openwebui` | usuarios, chats, prompts, configuraciones |
+| **Hermes Agent** | `$HOME/hermes` | Configuración de los agentes |
+| **OpenCode** | `$HOME/opencode` | Código de los proyectos y las configuraciones |
+| **ComfyUI** | `$HOME/comfyui` | Imágesn y vídeos generados, prompts y modelos generativos | 
+| **YOLO** | `$HOME/yolo` | Dataset de los vídeos o imágenes analizadas |
+| **SearXNG** | `$HOME/searxng` | Resultados de las búsquedas realizadas | 
+| **RAG** | `$HOME/rag` | Ficheros que se le dotan para aumentar el conocimiento a la IA |
 
 ## 4. Requisitos de sistema y hardware
 
