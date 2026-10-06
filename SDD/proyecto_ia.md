@@ -64,14 +64,20 @@ Consiste en "mapear" un sistema de ficheros dentro de cada contenedor a la máqu
 
 ## 5. Instrucciones para generar el manual técnico
 > **Instrucciones para la generación del documento de salida:**
-> Actúa como un experto en administración de sistemas GNU/Linux y Devops, genera un **Manual de instalación, configuración y operación** exhaustivo y detallado en formato Markdown basado esta especificación.
+> Actúa como un experto en administración de sistemas GNU/Linux y Devops, genera un **Manual de instalación, configuración y operación** exhaustivo y detallado en formato Markdown basado en esta especificación.
 > El manual generado debe incluir obligatoriamente las siguientes secciones:
 > 1. **Prerrequisitos e instalación base:** Comandos básicos en Linux para instalar Docker, Docker compose, drivers de NVIDIA CUDA, utilizando repositorios apt.
 > 2. **Estructura del proyecto:** Árbol detallado de directorios para el stack que vamos a montar `$HOME/proyecto`
 > 3. **Ficheros de configuración:** Un `docker-<servicio>.yml` por cada uno de los servicios que vamos a montar donde <servicio> se sustituye por el nombre del contenedor.
 > 4. **Fichero de entorno:** Fichero `.env` con todas las variables del entorno de todos los servicios.
+> 5. **Despliegue y verificación:** Comandos relacionados con el arranque de servicios (`docker compose up -d`), comprobación de logs, acceso a URLs de servicio, uso de la GPU (`nvidia-smi`).
+> 6. **Mantenimiento y  actualización:** Comandos de backups, de actualización de los servicios, resolución de errores comunes (permisos)
+> 7. **Guía interna de integración interna:** Donde se detalla como conectar de manera exacta los servicios que corren en los docker, por ejemplo, Ollama con OpenwebUI, Searxng con Opencode,... 
 
 ## 6. Criterios de aceptación
-
+1. Los archivos de configuración `docker_<servicio>.yml` deben ser totalmente funcionales y sin errores sintácticos.
+2. Todos los contenedores deben funcionar correctamente con las librerías de NVIDIA (CUDA), utilizando principalmente GPU.
+3. No pueden existir colisiones entre puertos de los contenedores.
+4. Las explicaciones del manual deben ser especificadas paso a paso para un administrador de sistemas novato.
 
 
