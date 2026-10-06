@@ -12,9 +12,9 @@ La raíz de este repositorio contiene los manuales técnicos generados por tres 
 .
 ├── README.md               # Este archivo de presentación e índice
 ├── proyecto_ia.md          # Especificación original del proyecto (SDD)
-├── manual_gemini.md        # Manual de instalación y operación generado por Google Gemini
-├── manual_claude.md        # Manual de instalación y operación generado por Anthropic Claude
-└── manual_chatgpt.md       # Manual de instalación y operación generado por OpenAI ChatGPT
+├── manual_IA_gemini.md        # Manual de instalación y operación generado por Google Gemini
+├── manual_IA_claude.md        # Manual de instalación y operación generado por Anthropic Claude
+└── manual_IA_chatgpt.md       # Manual de instalación y operación generado por OpenAI ChatGPT
 ```
 
 ---
@@ -25,9 +25,9 @@ Para la generación de la documentación técnica y manuales de arquitectura se 
 
 | Proveedor | Modelo Utilizado | Fichero Generado |
 | :--- | :--- | :--- |
-| **Google** | Gemini 3.6 Flash | `manual_gemini.md` |
-| **Anthropic** | Claude Sonnet 5.5 | `manual_claude.md` |
-| **OpenAI** | ChatGPT GPT-5.6 Luna Instant | `manual_chatgpt.md` |
+| **Google** | Gemini 3.6 Flash | `manual_IA_gemini.md` |
+| **Anthropic** | Claude Sonnet 5.5 | `manual_IA_claude.md` |
+| **OpenAI** | ChatGPT GPT-5.6 Luna Instant | `manual_IA_chatgpt.md` |
 
 ---
 
@@ -61,9 +61,9 @@ Cada fichero de manual incluye:
 
 ### Enlaces directos a los manuales:
 
-* [📖 Manual generado por Google Gemini 3.6 Flash](manual_gemini.md)
-* [📖 Manual generado por Anthropic Claude Sonnet 5.5](manual_claude.md)
-* [📖 Manual generado por OpenAI ChatGPT GPT-5.6 Luna Instant](manual_chatgpt.md)
+* [📖 Manual generado por Google Gemini 3.6 Flash](manual_IA_gemini.md)
+* [📖 Manual generado por Anthropic Claude Sonnet 5.5](manual_IA_claude.md)
+* [📖 Manual generado por OpenAI ChatGPT GPT-5.6 Luna Instant](manual_IA_chatgpt.md)
 
 ---
 
